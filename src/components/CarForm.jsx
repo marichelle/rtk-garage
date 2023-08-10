@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addCar, changeName, changeValue, clearForm } from '../store'
+import { addCar, changeName, changeValue } from '../store'
 
 function CarForm() {
   const dispatch = useDispatch()
@@ -14,7 +14,6 @@ function CarForm() {
         value,
       })
     )
-    dispatch(clearForm())
   }
 
   const handleNameChange = e => dispatch(changeName(e.target.value))
