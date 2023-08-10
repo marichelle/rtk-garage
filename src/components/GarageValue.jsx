@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { USDollar } from '../utils/currency'
+import { garageValue } from '../store'
 
 function GarageValue() {
   /* FIXME: "Selector unknown returned a
@@ -7,11 +8,7 @@ function GarageValue() {
    * the same parameters. This can lead
    * to unnecessary rerenders."
    */
-  const totalValue = useSelector(({ carList: { cars, searchTerm } }) =>
-    cars
-      .filter(car => car.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      .reduce((acc, car) => acc + car.value, 0)
-  )
+  const totalValue = useSelector(garageValue)
 
   return (
     <div className="flex flex-row justify-end gap-3 text-2xl font-semibold">

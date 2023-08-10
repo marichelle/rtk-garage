@@ -1,22 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { matchedCars, removeCar } from '../store/slices/carListSlice'
 import { USDollar } from '../utils/currency'
-import { removeCar } from '../store/slices/carListSlice'
 
 function CarList() {
   const dispatch = useDispatch()
   // NOTE: An optimal location for derived state is within `useSelector()`
-  const { filteredCars, formName } = useSelector(
-    ({ carForm: { name }, carList: { cars, searchTerm } }) => {
-      const filteredCars = cars.filter(car =>
-        car.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-
-      return {
-        filteredCars,
-        formName: name,
-      }
-    }
-  )
+  const { filteredCars, formName } = useSelector(matchedCars)
 
   const handleClick = id => dispatch(removeCar(id))
 

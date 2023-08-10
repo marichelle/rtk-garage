@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit'
+import { createSelector, createSlice, nanoid } from '@reduxjs/toolkit'
 import { changeName } from './carFormSlice'
 
 const carListSlice = createSlice({
@@ -40,5 +40,36 @@ const carListSlice = createSlice({
   },
 })
 
-export const { changeSearchTerm, addCar, removeCar } = carListSlice.actions
+// memoized custom selector to optimize redux store functionality
+export const garageValue = createSelector(
+  /*
+   * Array of input selector(s)
+   * As long as these don't change, the
+   * component will not re-render and,
+   * in turn, the provided resolve
+   * function will not be re-run
+   */
+  [rootState => rootState.carList],
+  // resolve function
+  ({ cars, searchTerm }) =>
+    cars
+      .filter(car => car.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      .reduce((acc, car) => acc + car.value, 0)
+)
+
+export const matchedCars = createSelector(
+  [rootState => rootState.carForm.name, rootState => rootState.carList],
+  (name, { cars, searchTerm }) => {
+    const filteredCars = cars.filter(car =>
+      car.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
+    return {
+      filteredCars,
+      formName: name,
+    }
+  }
+)
+
+export const { addCar, changeSearchTerm, removeCar } = carListSlice.actions
 export const carListReducer = carListSlice.reducer

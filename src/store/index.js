@@ -2,9 +2,11 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import { carFormReducer, changeName, changeValue } from './slices/carFormSlice'
 import {
+  addCar,
   carListReducer,
   changeSearchTerm,
-  addCar,
+  garageValue,
+  matchedCars,
   removeCar,
 } from './slices/carListSlice'
 
@@ -15,4 +17,13 @@ const store = configureStore({
   },
 })
 
-export { addCar, changeName, changeSearchTerm, changeValue, removeCar, store }
+export {
+  addCar,
+  changeName,
+  changeSearchTerm,
+  changeValue,
+  garageValue,
+  matchedCars,
+  removeCar,
+  store,
+}
