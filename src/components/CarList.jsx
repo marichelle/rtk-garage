@@ -1,30 +1,38 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { USDollar } from '../utils/currency'
-
-const cars = [
-  {
-    name: 'Ford Focus',
-    value: 15000,
-  },
-  {
-    name: 'Subaru WRX',
-    value: 7500,
-  },
-]
+import { removeCar } from '../store/slices/carListSlice'
 
 function CarList() {
+  const dispatch = useDispatch()
+  const { cars, searchTerm } = useSelector(state => state.carList)
+
+  const handleClick = name => dispatch(removeCar(name))
+
   return (
     <ul className="flex flex-col my-6 gap-y-3">
-      {cars.map(({ name, value }) => (
-        <li
-          key={name}
-          className="flex flex-row items-center justify-between px-3 py-4 border border-black"
-        >
-          <span className="text-xl">
-            {name} &mdash; {USDollar.format(value)}
-          </span>
-          <button className="text-white bg-black px-3 py-2.5">Delete</button>
-        </li>
-      ))}
+      {cars
+        .filter(car =>
+          searchTerm.length
+            ? car.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+            : true
+        )
+        .map(({ id, name, value }) => (
+          <li
+            key={id}
+            className="flex flex-row items-center justify-between px-3 py-4 border border-black"
+          >
+            <span className="text-xl">
+              {name} &mdash; {USDollar.format(value)}
+            </span>
+            <button
+              type="button"
+              className="text-white bg-black px-3 py-2.5"
+              onClick={() => handleClick(name)}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
     </ul>
   )
 }

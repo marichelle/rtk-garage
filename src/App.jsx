@@ -7,7 +7,6 @@ function App() {
   return (
     <main className="max-w-screen-md mx-auto my-6">
       <CarForm />
-      <hr className="my-6" />
       <CarSearch />
       <CarList />
       <GarageValue />
