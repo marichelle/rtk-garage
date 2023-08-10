@@ -6,6 +6,8 @@ function CarSearch() {
   const dispatch = useDispatch()
   const { searchTerm } = useSelector(state => state.carList)
 
+  const handleSearchTermChange = e => dispatch(changeSearchTerm(e.target.value))
+
   return (
     <div className="flex flex-row justify-between">
       <h1 className="text-3xl">My Cars</h1>
@@ -17,7 +19,7 @@ function CarSearch() {
           name="searchTerm"
           id="searchTerm"
           value={searchTerm}
-          onChange={e => dispatch(changeSearchTerm(e.target.value))}
+          onChange={handleSearchTermChange}
           className="p-2 border border-black"
         />
       </form>
