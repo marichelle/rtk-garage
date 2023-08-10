@@ -4,37 +4,46 @@ import { removeCar } from '../store/slices/carListSlice'
 
 function CarList() {
   const dispatch = useDispatch()
-  const { cars, searchTerm } = useSelector(state => state.carList)
+  // NOTE: An optimal location for derived state is within `useSelector()`
+  const { filteredCars, formName } = useSelector(
+    ({ carForm: { name }, carList: { cars, searchTerm } }) => {
+      const filteredCars = cars.filter(car =>
+        car.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+
+      return {
+        filteredCars,
+        formName: name,
+      }
+    }
+  )
 
   const handleClick = id => dispatch(removeCar(id))
 
-  return (
-    <ul className="flex flex-col my-6 gap-y-3">
-      {cars
-        .filter(car =>
-          searchTerm.length
-            ? car.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-            : true
-        )
-        .map(({ id, name, value }) => (
-          <li
-            key={id}
-            className="flex flex-row items-center justify-between px-3 py-4 border border-black"
-          >
-            <span className="text-xl">
-              {name} &mdash; {USDollar.format(value)}
-            </span>
-            <button
-              type="button"
-              className="text-white bg-black px-3 py-2.5"
-              onClick={() => handleClick(id)}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-    </ul>
-  )
+  const renderedCars = filteredCars.map(({ id, name, value }) => {
+    // Highlight car if partial match exists
+    const isMatchExists =
+      formName && name.toLowerCase().includes(formName.toLowerCase())
+    return (
+      <li
+        key={id}
+        className="flex flex-row items-center justify-between px-3 py-4 border border-black"
+      >
+        <span className={`text-xl ${isMatchExists ? 'font-medium' : ''}`}>
+          {name} &mdash; {USDollar.format(value)}
+        </span>
+        <button
+          type="button"
+          className="text-white bg-black px-3 py-2.5"
+          onClick={() => handleClick(id)}
+        >
+          Delete
+        </button>
+      </li>
+    )
+  })
+
+  return <ul className="flex flex-col my-6 gap-y-3">{renderedCars}</ul>
 }
 
 export default CarList
