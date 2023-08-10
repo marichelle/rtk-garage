@@ -6,7 +6,7 @@ function CarForm() {
   const dispatch = useDispatch()
   const { name, value } = useSelector(state => state.carForm)
 
-  const handleSubmit = e => {
+  const handleFormSubmit = e => {
     e.preventDefault()
     dispatch(
       addCar({
@@ -17,16 +17,24 @@ function CarForm() {
     dispatch(clearForm())
   }
 
+  const handleNameChange = e => dispatch(changeName(e.target.value))
+
+  const handleValueChange = e =>
+    dispatch(changeValue(parseInt(e.target.value, 10) || 0))
+
   return (
     <>
-      <form className="flex flex-row items-end gap-2" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-row items-end gap-2"
+        onSubmit={handleFormSubmit}
+      >
         <div className="flex flex-col w-full">
           <label htmlFor="name">Car Name</label>
           <input
             name="name"
             id="name"
             value={name}
-            onChange={e => dispatch(changeName(e.target.value))}
+            onChange={handleNameChange}
             className="w-full p-2 border border-black"
           />
         </div>
@@ -36,8 +44,8 @@ function CarForm() {
             type="number"
             name="value"
             id="value"
-            value={value}
-            onChange={e => dispatch(changeValue(e.target.value))}
+            value={value || ''}
+            onChange={handleValueChange}
             className="p-2 border border-black"
           />
         </div>
