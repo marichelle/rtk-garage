@@ -6,7 +6,7 @@ function CarList() {
   const dispatch = useDispatch()
   const { cars, searchTerm } = useSelector(state => state.carList)
 
-  const handleClick = name => dispatch(removeCar(name))
+  const handleClick = id => dispatch(removeCar(id))
 
   return (
     <ul className="flex flex-col my-6 gap-y-3">
@@ -27,7 +27,7 @@ function CarList() {
             <button
               type="button"
               className="text-white bg-black px-3 py-2.5"
-              onClick={() => handleClick(name)}
+              onClick={() => handleClick(id)}
             >
               Delete
             </button>

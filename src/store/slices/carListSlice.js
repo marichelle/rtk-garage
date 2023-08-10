@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, nanoid } from '@reduxjs/toolkit'
 import { changeName } from './carFormSlice'
 
 const carListSlice = createSlice({
@@ -18,19 +18,24 @@ const carListSlice = createSlice({
      */
     addCar: (state, { payload }) => {
       state.cars.push({
-        id: Date.now(),
+        id: nanoid(),
         name: payload.name,
         value: payload.value,
       })
     },
+
+    /*
+     * Assumption:
+     * The action payload will have a specific shape, e.g.
+     * action.payload === id
+     */
     removeCar: (state, { payload }) => {
-      state.cars.splice(state.cars.indexOf(payload), 1)
+      state.cars = state.cars.filter(car => car.id !== payload)
     },
   },
   extraReducers: builder => {
     builder.addCase(changeName, state => {
       // do something
-      console.log('🚀 -> state:', state)
     })
   },
 })
